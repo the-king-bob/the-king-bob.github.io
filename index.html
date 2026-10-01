@@ -20,13 +20,36 @@
     #countdown {
       font-size: 5rem;
       text-align: center;
+      margin-bottom: 20px;
     }
+
+  .toggle-btn {
+    background-color: #C5B358;
+    color: black;
+    border: 2px solid #C5B358;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius:5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 20px;
+  }
+
+  .toggle-btn:hover {
+    background-color: #C5B358;
+    color: black;
+  }
+
   </style>
 </head>
 <body>
 
 <h1>Time until FRC kick off</h1>
 <div id="countdown"></div>
+
+<button type="button" id="toggle-btn" class ="toggle-btn">Switch to Seconds</button>
+
 <h3>brought to you by team 6078</h3>
 
 <script>
@@ -34,6 +57,9 @@
   const targetDate = "2027-01-09T12:00:00";
 
   const countdown = document.getElementById("countdown");
+  const toggleBtn = document.getElementById("toggle-btn");
+
+    let showSecondsOnly = false;
 
   function updateCountdown() {
     const now = new Date().getTime();
@@ -46,6 +72,12 @@
       return;
     }
 
+    if (showSecondsOnly) {
+      const totalSeconds = Math.floor(distance / 1000);
+      countdown.innerHTML = `${totalSeconds.toLocaleString()}s`;
+    }
+else {
+
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((distance / (1000 * 60)) % 60);
@@ -53,7 +85,19 @@
 
     countdown.innerHTML =
       `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
   }
+
+  toggleBtn.addEventListener("click", () => {
+    showSecondsOnly = !showSecondsOnly;
+
+if (showSecondsOnly) {
+      toggleBtn.textContent = "Switch to DD:HH:MM:SS";
+    } else {
+      toggleBtn.textContent = "Switch to Seconds";
+    }
+    updateCountdown(); 
+  });
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
